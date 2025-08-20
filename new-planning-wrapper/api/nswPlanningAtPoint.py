@@ -20,14 +20,16 @@ def query_layer(layer, geometry):
         return data["features"][0]["attributes"]
     return None
 
-# Vercel looks for this "handler"
+# Vercel looks for this exact handler function
 def handler(request):
     try:
         body = json.loads(request.body.decode())
         geometry = body["geometry"]
+
         zoning = query_layer(2, geometry)
         fsr = query_layer(1, geometry)
         height = query_layer(5, geometry)
+
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
